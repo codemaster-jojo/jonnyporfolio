@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>DJonny</title>
+		<link href="https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+		<style>
+			body{
+				width:100vw;
+				height:100vh;
+				background-image:url(https://steamusercontent-a.akamaihd.net/ugc/2436887313885364750/5A62C81BEFB481B164BC3A5654BC10EB80EE1A3C/);
+				background-size:cover;
+				background-position:50% 50%;
+			}	
+			h1{
+				text-align:center;
+				color:black;
+				background-image: linear-gradient(to right, black, white, black);
+				font-family:'Comic Neue', cursive;
+				margin-top:0;
+				margin-bottom:0;
+			}
+			h2{
+				text-align:center;
+				color:black;
+				background-image: linear-gradient(to right, black, white, black);
+				font-family:'Comic Neue', cursive;
+				margin-top:0;
+				margin-bottom:0;
+			}
+			h3{
+				text-align:center;
+				color:black;
+				background-image: linear-gradient(to right, black, white, black);
+				font-family:'Comic Neue', cursive;
+				margin-top:0;
+				margin-bottom:0;
+			}	
+			
+			table{
+				margin:auto;
+				border: 3px solid #28a848;
+				border-radius: 15px;
+			}
+			button{
+				font-family: 'Comic Neue', cursive;
+				border-radius: 15px;
+				border: 3px solid #1dcfc9;
+				width:80px;
+				height:80px;
+				font-size:30px;
+				background-image: linear-gradient(to bottom right, #ff00ee, #fc0303, #f0fc03);
+			}
+			button:hover{
+				border: 3px line #000000;
+				transition:transform 0.5s;
+				transform: scale(1.25);
+				color:#000000;
+			}
+			button#loop{
+				text-align:center;
+				font-size:20px;
+			}
+			.soundOn{
+				animation:blink 2s infinite linear;
+			}
+			@keyframes blink{
+				0%(background-color:linear-gradient(to bottom right, #ff00ee, #fc0303, #f0fc03);)
+				20%(background-color:linear-gradient(to bottom right, #ff00ee, #f0fc03, #fc0303);)
+				40%(background-color:linear-gradient(to bottom right, #f0fc03, #ff00ee, #f0fc03);)
+				60%(background-color:linear-gradient(to bottom right, #f0fc03, #f0fc03, #ff00ee);)
+				80%(background-color:linear-gradient(to bottom right, #f0fc03, #fc0303, #ff00ee);)
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Jonathan Tang</h1>
+		<h2>The DJJT</h2>
+		<h3>The Disco Jockey Jonny Tang</h3>
+		<button id="loop">TEST!!</button>
+		<table>
+			<tr>
+				<td><button>1</button></td>
+				<td><button>2</button></td>
+				<td><button>3</button></td>
+				<td><button>4</button></td>
+				<td><button>5</button></td>
+				<td><button>6</button></td>
+				<td><button>7</button></td>
+				<td><button>8</button></td>
+			</tr>
+			<tr>
+				<td><button>9</button></td>
+				<td><button>0</button></td>
+				<td><button>a</button></td>
+				<td><button>b</button></td>
+				<td><button>c</button></td>
+				<td><button>d</button></td>
+				<td><button>e</button></td>
+				<td><button>f</button></td>
+			</tr>
+			<tr>
+				<td><button>g</button></td>
+				<td><button>h</button></td>
+				<td><button>i</button></td>
+				<td><button>j</button></td>
+				<td><button>k</button></td>
+				<td><button>l</button></td>
+				<td><button>m</button></td>
+				<td><button>n</button></td>
+			</tr>
+			<tr>
+				<td><button>o</button></td>
+				<td><button>p</button></td>
+				<td><button>q</button></td>
+				<td><button>r</button></td>
+				<td><button>s</button></td>
+				<td><button>t</button></td>
+				<td><button>u</button></td>
+				<td><button>v</button></td>
+			</tr>
+			<tr>
+				<td><button>w</button></td>
+				<td><button>x</button></td>
+				<td><button>y</button></td>
+				<td><button>z</button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+			</tr>
+			<tr>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+			</tr>
+			<tr>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+			</tr>
+			<tr>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+				<td><button></button></td>
+			</tr>
+		</table>
+		<script src="https://kyle.wisen.space/howler.js"></script>
+		<script>
+		var asound=document.getElementById("mySound");
+		var allbuttons=document.querySelectorAll("button")
+		
+		var mp3files = [
+			"https://elvi.wisen.space/soundfx1.mp3",
+			"https://elvi.wisen.space/soundfx2.mp3",
+			"https://elvi.wisen.space/soundfx3.mp3",
+			"https://elvi.wisen.space/soundfx4.mp3",
+			"https://elvi.wisen.space/soundfx5.mp3",
+			"https://elvi.wisen.space/soundfx6.mp3",
+			"https://elvi.wisen.space/soundfx7.mp3",
+			"https://elvi.wisen.space/soundfx8.mp3",
+			"https://elvi.wisen.space/soundfx9.mp3",
+			"https://elvi.wisen.space/soundfx10.mp3",
+			"https://elvi.wisen.space/soundfx11.mp3",
+			"https://elvi.wisen.space/soundfx12.mp3",
+			"https://elvi.wisen.space/soundfx13.mp3",
+			"https://elvi.wisen.space/soundfx14.mp3",
+			"https://elvi.wisen.space/soundfx15.mp3",
+			"https://elvi.wisen.space/soundfx16.mp3",
+			"https://elvi.wisen.space/soundfx17.mp3",
+			"https://elvi.wisen.space/soundfx18.mp3",
+			"https://elvi.wisen.space/soundfx19.mp3",
+			"https://elvi.wisen.space/soundfx20.mp3",
+			"https://elvi.wisen.space/soundfx21.mp3",
+			"https://elvi.wisen.space/soundfx22.mp3",
+			"https://elvi.wisen.space/soundfx23.mp3",
+			"https://elvi.wisen.space/soundfx24.mp3",
+			"https://elvi.wisen.space/soundfx25.mp3",
+			"https://elvi.wisen.space/soundfx26.mp3",
+			"https://elvi.wisen.space/soundfx27.mp3",
+			"https://elvi.wisen.space/soundfx28.mp3",
+			"https://elvi.wisen.space/soundfx29.mp3",
+			"https://elvi.wisen.space/soundfx30.mp3",
+			"https://elvi.wisen.space/soundfx31.mp3",
+			"https://elvi.wisen.space/soundfx32.mp3",
+			"https://elvi.wisen.space/soundfx33.mp3",
+			"https://elvi.wisen.space/soundfx34.mp3",
+			"https://elvi.wisen.space/soundfx35.mp3",
+			"https://elvi.wisen.space/soundfx36.mp3",
+			"https://elvi.wisen.space/soundfx37.mp3",
+			"https://elvi.wisen.space/soundfx38.mp3",
+			"https://elvi.wisen.space/soundfx39.mp3",
+			"https://elvi.wisen.space/soundfx40.mp3",
+			"https://elvi.wisen.space/soundfx41.mp3",
+			"https://elvi.wisen.space/soundfx42.mp3",
+			"https://elvi.wisen.space/soundfx43.mp3",
+			"https://elvi.wisen.space/soundfx44.mp3",
+			"https://elvi.wisen.space/soundfx45.mp3",
+			"https://elvi.wisen.space/soundfx46.mp3",
+			"https://elvi.wisen.space/soundfx47.mp3",
+			"https://elvi.wisen.space/soundfx48.mp3",
+			"https://elvi.wisen.space/soundfx49.mp3",
+			"https://elvi.wisen.space/soundfx50.mp3",
+			"https://elvi.wisen.space/soundfx51.mp3",
+			"https://elvi.wisen.space/soundfx52.mp3",
+			"https://elvi.wisen.space/soundfx53.mp3",
+			"https://elvi.wisen.space/soundfx54.mp3",
+			"https://elvi.wisen.space/soundfx55.mp3",
+			"https://elvi.wisen.space/soundfx56.mp3",
+			"https://elvi.wisen.space/soundfx57.mp3",
+			"https://elvi.wisen.space/soundfx58.mp3",
+			"https://elvi.wisen.space/soundfx59.mp3",
+			"https://elvi.wisen.space/soundfx60.mp3",
+			"https://elvi.wisen.space/soundfx61.mp3",
+			"https://elvi.wisen.space/soundfx62.mp3",
+			"https://elvi.wisen.space/soundfx63.mp3",
+			"https://elvi.wisen.space/soundfx64.mp3"
+		];
+		
+	var soundEffects = mp3files.map(function(soundfile) {
+		var sound=new Howl(
+			{
+				src:[soundfile],
+				loop: false
+			})
+			return sound;	
+		})
+		
+		function playSoundFile( index ){
+			if ( !soundEffects[index].playing() ){
+			soundEffects[index].play();
+			}
+		}
+		function playSound( index ){
+			var thisbutton = this;
+			var soundval = thisbutton.getAttribute("soundval");
+			var soundId = parseInt(soundval)
+			thisbutton.classList.add("soundOn")
+			playSoundFile( soundId )
+			
+			setTimeout(function(){
+				thisbutton.classList.remove("soundOn")
+			}, 3000)
+		}
+		function playKeySound(event){
+			allbuttons.forEach(function(onebutton){
+				if (event.key === onebutton.getAttribute("keyval")){
+					var soundval = onebutton.getAttribute("soundval");
+					var soundId = parseInt(soundval);
+					playSoundFile(soundId )
+					onebutton.classList.add("soundOn")
+					setTimeout(function(){
+						thisbutton.classList.remove("soundOn")
+					}, 3000)
+				}
+			})
+		}
+		document.addEventListener("keydown", playKeySound)
+		
+		function loopSounds(){
+			var numbers = [ ];
+			for (var i=0; i<4; i++){
+				setTimeout(
+					function(){
+						var num = Math.floor(Math.random() * soundEffects.length);
+						playSoundFile(num);
+			}
+			, 300);
+		}
+	}	
+		
+		var loopbutton = document.getElementById("loop");
+		loopbutton.addEventListener("click", loopSounds);
+		
+		allbuttons.forEach(function(onebutton, index){
+			onebutton.setAttribute("soundval", index);
+			onebutton.setAttribute("keyval", onebutton.innerText)
+			onebutton.addEventListener("click", playSound); onclick="playSound()"
+			onebutton.addEventListener("touchstart", playSound); 
+		});
+		</script>
+	</body>
+	
+</html><

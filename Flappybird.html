@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf=8">
+		<link rel="icon" href="https://i.dlpng.com/static/png/678z1141_preview.png">
+		<title>Easy Flappy Bird!!!</title>
+		<style>
+			body{
+				margin:0px;
+				width:100vw;
+				height:100vh;
+				/*background-image:url(https://kids.nationalgeographic.com/content/dam/kids/photos/articles/Nature/H-P/Habitats/Ocean/wave.ngsversion.1500050062134.adapt.1900.1.jpg);*/
+				background-image:url(http://ellisonleao.github.io/clumsy-bird/data/img/bg.png);
+				background-size:cover;
+				background-position:50% 50%;
+				overflow:hidden;
+			}
+			#start{
+				text-align:center;
+				width:100px;
+				height:50px;
+				font-size:1.5em;
+				font-family:monospace;
+                text-align:center;
+				margin:40px;
+				border-radius:10px;
+			}
+			#intro{
+				margin:auto;
+				width:300px;
+				height:100px;
+				text-align:center;
+				background-color:#09cbd9;
+			}
+			#bird{
+				position:absolute;
+				bottom:40vh;
+				width:5.9vw;
+				height:4.2vw;
+				background-size:contain;
+				background-image:url(https://elvi.applied-computing.org/images/flappy2.png);
+				/*background-color:white;*/
+				/*background-image:url(https://upload.wikimedia.org/wikipedia/en/a/a9/MarioNSMBUDeluxe.png);*/
+				/*border:1px solid green;*/
+			}
+			#scoreboard{
+				background-color:#20522d;
+				width:100px;
+				height:50px;
+				text-align:center;
+				position:absolute;
+				right:10px;
+				top:10px;
+				z-index:1;
+				border-radius:7px;
+				border:10px ridge white;
+				color:white;
+				font-size:2em;
+			}
+			#name {
+				font-size:1.5em;
+				position:absolute;
+				left:0;
+				top:0;
+				padding:1em;
+				color:yellow;
+			}
+		</style>
+	</head>
+	<body>
+		<section id="intro">
+			<h1>Advanced Flappy Bird</h1>
+			<p>Press space to jump. If you hit a pipe, you will die, but if you hit the bottom, your score will reset.</p>
+			<input placeholder='Enter Name' autofocus>
+			<button id="start">Lets-a-go</button>
+		</section>
+		<div style = "bottom:40vh;" id="bird"></div>
+		<div id="name"></div>
+		<div id="scoreboard"></div>
+		
+		<!--<iframe width="0" height="0" src="https://www.youtube.com/embed/KAHKP313P2I?autoplay=1&controls=1" frameborder="0"  	allow="accelerometer; autoplay;" ></iframe>
+
+		<!--<div style="top:10px; left:10px; position:absolute;">
+			
+			<iframe width="20" height="20" src="https://www.youtube.com/embed/KAHKP313P2I?autoplay=1&controls=1" frameborder="0"  	allow="accelerometer; autoplay;" ></iframe>
+		</div> -->
+		
+		<script>
+			const obstacle_width = 67.5; //px
+			const obstacle_height = 60; //vw
+			const obstacle_gap = 60 ; //vh 
+			const obstacle_spacing = 300; //px
+			const obstacle_speed = 5; //px
+		
+			var startbutton = document.getElementById("start");
+			var introsection = document.getElementById("intro");
+			var flappybird = document.getElementById("bird");
+			var scoreb = document.getElementById("scoreboard")
+			var velocity = 1.2;
+			var gravity = 0.04; 
+			var columns = [];
+			var colcrash;
+			var flappyscore = 0;
+
+			function onecolumnPair(bottomV, rightV){
+				//upper column
+				var lowdiv = document.createElement("div")
+				lowdiv.style.position = "absolute";
+				lowdiv.style.backgroundSize = "100% 100%";
+				lowdiv.style.backgroundImage = "url(https://elvi.applied-computing.org/images/flappycols.png)";
+				lowdiv.style.width = obstacle_width + "px";
+				lowdiv.style.height = obstacle_height + "vh"; 
+				lowdiv.style.right = rightV + "px";
+				lowdiv.style.bottom = bottomV + "vh";
+				lowdiv.style.transform = "rotate(180deg)";
+				document.body.appendChild( lowdiv );
+				//lower column
+				var updiv = document.createElement("div")
+				updiv.style.position = "absolute";
+				updiv.style.backgroundSize = "100% 100%";
+				updiv.style.backgroundImage = "url(https://elvi.applied-computing.org/images/flappycols.png)";
+				updiv.style.width = obstacle_width + "px";
+				updiv.style.height = obstacle_height + "vh"; 
+				updiv.style.right = rightV + "px";
+				updiv.style.bottom = bottomV + obstacle_height + obstacle_gap + "vh";
+				document.body.appendChild( updiv );
+			
+				var coldata = { "upper": updiv, "lower": lowdiv,
+							"bottomV": bottomV, "rightV": rightV};
+				return coldata;
+			}
+			
+			function checkObstacleHit( coldata ){
+				var bird = flappybird.getBoundingClientRect();
+				var uppercol = coldata.upper.getBoundingClientRect();
+				var lowercol = coldata.lower.getBoundingClientRect();
+
+				if(bird.right < uppercol.left){
+					return false;
+				}
+				if(bird.left > lowercol.right){
+					return false;
+				}
+				if(bird.top < uppercol.bottom){
+					colcrash = coldata;
+					return true;
+				}
+				if(bird.bottom > lowercol.top){
+					colcrash = coldata;
+					return true;
+				}
+				return false;
+				
+				
+			}
+			
+			function createColumns(){
+				columns= [
+					//(bottom, right)
+				onecolumnPair ( 0, 0 ),
+	        	onecolumnPair ( -20, -1* obstacle_spacing ),
+				onecolumnPair ( -32, -1.5* obstacle_spacing ),
+				onecolumnPair ( -45, -2* obstacle_spacing ),
+				onecolumnPair ( -20, -2.5* obstacle_spacing ),
+				onecolumnPair ( -15, -3* obstacle_spacing ),
+				onecolumnPair ( -44, -3.5* obstacle_spacing ),
+				onecolumnPair ( -10, -4* obstacle_spacing ),
+				onecolumnPair ( -36, -4.5* obstacle_spacing ),
+				onecolumnPair ( -18, -5* obstacle_spacing ),
+				onecolumnPair ( -28, -5.5* obstacle_spacing),
+	        	onecolumnPair ( -29, -6* obstacle_spacing ),
+				onecolumnPair ( -37, -6.5* obstacle_spacing ),
+				onecolumnPair ( -41, -7* obstacle_spacing ),
+				onecolumnPair ( -47, -7.5* obstacle_spacing ),
+				onecolumnPair ( -30, -8* obstacle_spacing ),
+				onecolumnPair ( -23, -8.5* obstacle_spacing ),
+				onecolumnPair ( -40, -9* obstacle_spacing ),
+				onecolumnPair ( -33, -9.5* obstacle_spacing ),
+				onecolumnPair ( -29, -10* obstacle_spacing ),
+				onecolumnPair ( -20, -11* obstacle_spacing ),
+				onecolumnPair ( -25, -11.5* obstacle_spacing ),
+				onecolumnPair ( -29, -12* obstacle_spacing ),
+				onecolumnPair ( -35, -12.5* obstacle_spacing ),
+				onecolumnPair ( -23, -13* obstacle_spacing ),
+				onecolumnPair ( -17, -13.5* obstacle_spacing ),
+				onecolumnPair ( -14, -14* obstacle_spacing ),
+				onecolumnPair ( -24, -14.5* obstacle_spacing ),
+				onecolumnPair ( -19, -15* obstacle_spacing ),
+				onecolumnPair ( -26, -15.5* obstacle_spacing),
+	        	onecolumnPair ( -18, -16* obstacle_spacing ),
+				onecolumnPair ( -27, -16.5* obstacle_spacing ),
+				onecolumnPair ( -17, -17* obstacle_spacing ),
+				onecolumnPair ( -28, -17.5* obstacle_spacing ),
+				onecolumnPair ( -24, -18* obstacle_spacing ),
+				onecolumnPair ( -30, -18.5* obstacle_spacing ),
+				onecolumnPair ( -33, -19* obstacle_spacing ),
+				onecolumnPair ( -38, -19.5* obstacle_spacing ),
+				onecolumnPair ( -40, -20* obstacle_spacing ),
+				onecolumnPair ( -10, -21* obstacle_spacing ),
+				onecolumnPair ( -39, -22* obstacle_spacing ),
+				onecolumnPair ( -17, -23* obstacle_spacing ),
+				onecolumnPair ( -45, -24* obstacle_spacing ),
+				onecolumnPair ( -18, -25* obstacle_spacing ),
+				onecolumnPair ( -41, -26* obstacle_spacing ),
+				onecolumnPair ( -16, -27* obstacle_spacing ),
+				onecolumnPair ( -40, -28* obstacle_spacing ),
+				onecolumnPair ( -14, -29* obstacle_spacing ),
+				onecolumnPair ( -39, -30* obstacle_spacing ),
+	        	onecolumnPair ( -21, -31* obstacle_spacing ),
+				onecolumnPair ( -47, -32* obstacle_spacing ),
+				onecolumnPair ( -18, -33* obstacle_spacing ),
+				onecolumnPair ( -47, -34* obstacle_spacing ),
+				onecolumnPair ( -19, -35* obstacle_spacing ),
+				onecolumnPair ( -39, -36* obstacle_spacing ),
+				onecolumnPair ( -31, -37* obstacle_spacing ),
+				onecolumnPair ( -10, -38* obstacle_spacing ),
+				onecolumnPair ( -42, -39* obstacle_spacing ),
+				onecolumnPair ( -13, -40* obstacle_spacing ),
+				onecolumnPair ( -42, -41* obstacle_spacing ),
+				onecolumnPair ( -15, -41.5* obstacle_spacing ),
+				onecolumnPair ( -39, -42* obstacle_spacing ),
+				onecolumnPair ( -13, -42.5* obstacle_spacing ),
+				onecolumnPair ( -46, -43* obstacle_spacing ),
+				onecolumnPair ( -13, -43.5* obstacle_spacing ),
+				onecolumnPair ( -36, -44* obstacle_spacing ),
+				onecolumnPair ( -19, -44.5* obstacle_spacing ),
+				onecolumnPair ( -40, -45* obstacle_spacing ),
+	        	onecolumnPair ( -17, -45.5* obstacle_spacing ),
+				onecolumnPair ( -29, -46* obstacle_spacing ),
+				onecolumnPair ( -10, -46.5* obstacle_spacing ),
+				onecolumnPair ( -38, -47* obstacle_spacing ),
+				onecolumnPair ( -45, -47.5* obstacle_spacing ),
+				onecolumnPair ( -17, -48* obstacle_spacing ),
+				onecolumnPair ( -39, -48.5* obstacle_spacing ),
+				onecolumnPair ( -22, -49* obstacle_spacing ),
+				onecolumnPair ( -47, -49.5* obstacle_spacing ),
+				onecolumnPair ( -13, -50* obstacle_spacing ),
+				onecolumnPair ( -41, -50.5* obstacle_spacing ),
+				onecolumnPair ( -13, -51* obstacle_spacing ),
+				onecolumnPair ( -11, -51.5* obstacle_spacing ),
+				onecolumnPair ( -42, -52* obstacle_spacing ),
+				onecolumnPair ( -46, -52.5* obstacle_spacing ),
+				onecolumnPair ( -13, -53* obstacle_spacing ),
+				onecolumnPair ( -39, -53.5* obstacle_spacing ),
+	        	onecolumnPair ( -21, -54* obstacle_spacing ),
+				onecolumnPair ( -12, -54.5* obstacle_spacing ),
+				onecolumnPair ( -46, -55* obstacle_spacing ),
+				onecolumnPair ( -20, -55.5* obstacle_spacing ),
+				onecolumnPair ( -14, -56* obstacle_spacing ),
+				onecolumnPair ( -47, -56.5* obstacle_spacing ),
+				onecolumnPair ( -12, -57* obstacle_spacing ),
+				onecolumnPair ( -15, -57.5* obstacle_spacing ),
+				onecolumnPair ( -29, -58* obstacle_spacing ),
+				onecolumnPair ( -39, -58.5* obstacle_spacing ),
+				onecolumnPair ( -12, -59* obstacle_spacing ),
+				onecolumnPair ( -46, -59.5* obstacle_spacing ),
+				onecolumnPair ( -13, -60.3* obstacle_spacing ),
+				onecolumnPair ( -19, -60.6* obstacle_spacing ),
+				onecolumnPair ( -24, -60.9* obstacle_spacing ),
+				onecolumnPair ( -29, -61.2* obstacle_spacing ),
+	        	onecolumnPair ( -37, -61.5* obstacle_spacing ),
+				onecolumnPair ( -45, -61.8* obstacle_spacing ),
+				onecolumnPair ( -39, -62.1* obstacle_spacing ),
+				onecolumnPair ( -36, -62.4* obstacle_spacing ),
+				onecolumnPair ( -27, -62.7* obstacle_spacing ),
+				onecolumnPair ( -22, -63* obstacle_spacing ),
+				onecolumnPair ( -17, -63.3* obstacle_spacing ),
+				onecolumnPair ( -14, -63.6* obstacle_spacing ),
+				onecolumnPair ( -19, -63.9* obstacle_spacing ),
+				onecolumnPair ( -13, -64.2* obstacle_spacing ),
+				onecolumnPair ( -47, -64.5* obstacle_spacing ),
+				onecolumnPair ( -21, -64.8* obstacle_spacing ),
+				onecolumnPair ( -39, -65.1* obstacle_spacing ),
+	        	onecolumnPair ( -45, -65.4* obstacle_spacing ),
+				onecolumnPair ( -12, -65.7* obstacle_spacing ),
+				onecolumnPair ( -11, -66* obstacle_spacing ),
+				onecolumnPair ( -36, -66.3* obstacle_spacing ),
+				onecolumnPair ( -23, -66.6* obstacle_spacing ),
+				onecolumnPair ( -43, -66.9* obstacle_spacing ),
+				onecolumnPair ( -12, -67.2* obstacle_spacing ),
+				onecolumnPair ( -46, -67.5* obstacle_spacing ),
+				onecolumnPair ( -16, -67.8* obstacle_spacing )
+				];
+			}
+			function moveColumnPair(coldata){
+				var uval = parseFloat(coldata.upper.style.right) + 2;
+				coldata.upper.style.right = uval + obstacle_speed + "px";
+				var lval = parseFloat(coldata.lower.style.right) + 2;
+				coldata.lower.style.right = lval + obstacle_speed + "px";
+			}
+			
+			function passedObstacles( coldata ){
+				var passed = false;
+				var bbox = flappybird.getBoundingClientRect();
+				var cbox = coldata.upper.getBoundingClientRect();
+				if (bbox.left > cbox.right){
+					passed = true;
+				}
+				return passed;
+			}
+			
+			
+			function updateScore(){
+				var score = columns.filter( passedObstacles ).length;
+				scoreb.innerText = score;
+				scoreb.innertext = flappyscore;
+			}
+			
+			
+			
+			
+			function animate(){
+				var bbot = parseFloat(flappybird.style.bottom);
+				
+				if(bbot <= 0){
+					alert("WHY DID YOU DRIVE OFF THE ROAD????")
+					//location.reload();
+					flappyscore = 0;
+					bbot = 50;
+					velocity = 1.2;
+					//return;
+				}
+				
+				if (velocity > 0){
+					flappybird.style.transform = "rotate(-20deg)";
+					}
+					else if (velocity < 0){
+						flappybird.style.transform = "rotate(20deg)";
+					}
+				
+				flappybird.style.bottom = bbot + velocity + "vh";
+				velocity -= gravity; //velocity = velocity - gravity
+				
+				//check if collided
+				var collided = columns.some( checkObstacleHit )
+				if(collided){
+					alert("BE MORE CAREFULL WHEN DRIVING!!!")
+					//var crval = parseFloat(colcrash.upper.style.right);
+					//colcrash.upper.style.right = crval + obstacle_width + "px"
+					//colcrash.lower.style.right = crval + obstacle_width + "px"
+					location.reload();
+					return;
+				}
+				flappybird.style.bottom = bbot + velocity + "vh";
+				velocity -= gravity; //velocity = velocity - gravity
+				
+				columns.forEach( moveColumnPair );
+				//columns.forEach(addNewColumns)
+				
+				updateScore();
+				//self calling frame
+				window.requestAnimationFrame( animate );
+			}
+			function addNewColumns( coldata ){
+				var cbox = coldata.upper.getBoundingClientRect();
+					if (cbox.right< 0 && !coldata.refreshed ){
+						var newcp = onecolumnPair( coldata.bottomV, coldata.rightV + 300);
+						columns.push( newcp );   //add to the array
+						coldata.refreshed = true;
+					}
+			}
+			function setUserName(){
+				// we want to get the persons name
+				var username = document.querySelector('input').value;
+				// if the person did not enter name we want to give them a new name 
+				if (!username || username===" "){
+					var namelist = ['Noob', 'Toob', 'Goob', 'Shoob', 'Loob', 'Moob'];
+					var arrayIndex = parseInt(Math.random()*namelist.length);
+					username = namelist[arrayIndex];
+				}
+				document.querySelector('#name').innerHTML = username;
+			}
+			function startGame(){
+				introsection.style.display = "none"
+				setUserName();
+				createColumns();
+				animate();
+			}
+			
+			function flappyJump( event ){
+				if(event.code === "Space"){
+					velocity = 1.1;
+					
+				}
+			}
+			
+			
+			
+			startbutton.addEventListener("mousedown", startGame)
+			
+			document.addEventListener("keypress", flappyJump)
+			document.addEventListener("touchstart", function(){velocity = 1.2;});
+		</script>
+	</body>
+</html>
