@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ACF!!!</title>
+		<meta charset="utf-8">
+		<style>
+			button.learn {
+				width:165px;
+				height:50px;
+				border-radius:10px;
+				border:10px ridge green;
+				margin-bottom:5px;
+			}
+			button.other{
+				margin-top:60px;
+				font-size: 40px;
+				color:white;
+            	font-family: fantasy;
+            	position: relative;
+            	animation-name: animation1;
+            	animation-duration:10s;
+            	animation-iteration-count: infinite;
+            	background-color:green;
+                border-radius:20px;
+    		}
+            button.secret{
+                margin-top:60px;
+				font-size: 40px;
+                width:10px;
+                height:10px;
+				color:black;
+            	font-family: fantasy;
+            	position: relative;
+            	animation-name: animation2;
+            	animation-duration:1s;
+            	animation-iteration-count: infinite;
+            	background-color:white;
+                border-radius:20px;
+            }
+			@keyframes animation1 {
+				0% {
+					left: 0px;
+				}
+				25% {
+					left: 300px;
+                	transform:rotate(-360deg);
+				}
+				50% {
+					left: 0px;
+				}
+            	75% {
+					left: 300px;
+                	transform:rotate(360deg);
+				}
+				100% {
+					left: 0px;
+				}
+			}
+            @keyframes animation2 {
+				0% {
+					left: 0px;
+				}
+				25% {
+					left: 300px;
+                	transform:rotate(-360deg);
+				}
+				50% {
+					left: 0px;
+				}
+            	75% {
+					left: 300px;
+                	transform:rotate(360deg);
+				}
+				100% {
+					left: 0px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+        <h1>Try to find the secret button/buttons!!!</h1>
+		<p>LEARN CODE!</p>
+		<button onclick="LearnHtml()" class="learn">Learn HTML</button><br>
+		<button onclick="LearnCss()" class="learn">Learn CSS</button><br>
+		<button onclick="LearnJs()" class="learn">Learn JS</button><br>
+		<p>OTHER STUFF:</p>
+		<button class="other">Animation</button>
+		<button class="other">Animation</button><br>
+        <button class="secret" onclick="secretButton()"></button>
+		
+		<script>
+			function LearnHtml () {
+				window.open("https://www.w3schools.com/html");
+			}
+			function LearnCss (){
+				window.open("https://www.w3schools.com/css");
+			}
+			function LearnJs (){
+				window.open("https://www.w3schools.com/js");
+			}
+            function secretButton(){ 
+                window.open("https://www.w3schools.com/css/css3_animations.asp")
+			}
+		</script>
+	</body>
+</html>
