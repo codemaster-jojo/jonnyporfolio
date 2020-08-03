@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link href="https://fonts.googleapis.com/css2?family=B612&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Shojumaru&display=swap" rel="stylesheet">
+		<link rel="icon" href="https://www.clker.com/cliparts/7/e/c/a/1368417721587803417icon-palette-brush-3-md.png">
+		<title>Virtual Art!</title>
+		<style>
+			body{
+				height:100vh;
+				width:100vw;
+				display:grid;
+				margin:0;
+				overflow:hidden;
+				grid-template-rows:60px 1fr 1fr 1fr 1fr 40px;
+				grid-template-columns:80px 1fr 1fr 1fr 1fr 80px;
+				grid-template-areas:
+				"h h h h h h"
+				"n m m m m s"
+				"n m m m m s"
+				"n m m m m s"
+				"n m m m m s"
+				"f f f f f f";
+			}
+			header{
+				text-align:center;
+				font-family: 'Shojumaru', cursive;
+				font-size:1.5em;
+				text-shadow: 0px -1px 2px red,
+                0px -3px 6px rgba(255,200,200,1),
+                0px -6px 12px rgba(255,150,150,1),
+                0px -10px 20px rgba(255,100,100,1),
+                0px -15px 30px rgba(255,50,50,1),
+                0px -21px 42px rgba(255,0,0,1);
+                animation:lightup 0.5s ease infinite, changecolor 10s linear infinite, grow 2s ease infinite;
+                grid-area:h;
+                position:relative;
+                background-color:yellow;
+                z-index:100;
+			}
+			@keyframes grow{
+				33%{
+					font-size:1em;
+				}
+				66%{
+					font-size:1.5em;
+				}
+				99{
+					font-size:1em;
+				}
+			}
+			@keyframes lightup{
+				50%{
+			         text-shadow:0px -4px 8px white,
+			         0px -12px 24px rgba(255,200,200,1),
+			         0px -24px 48px rgba(255,150,150,1),
+			         0px -40px 80px rgba(255,100,100,1),
+			         0px -60px 120px rgba(255,50,50,1),
+			         0px -84px 168px rgba(255,0,0,1);
+			    }
+			}
+			@keyframes changecolor{
+				to{filter:hue-rotate(360deg)}
+			} 
+			nav{
+				grid-area:n;
+				position:relative;
+				background-color:lightblue;
+				font-family:"B612", sans-serif;
+				z-index:100;
+				overflow-y:scroll;
+			}
+			main{
+				grid-area:m;
+				position:relative;
+				font-family:"B612", sans-serif;
+			}
+			section{
+				grid-area:s;
+				position:relative;
+				background-color:lightblue;
+				font-family:"B612", sans-serif;
+				z-index:100;
+				text-align:center;
+			}
+			section > input{
+				  width:90%;
+			}
+			footer{
+				grid-area:f;
+				position:relative;
+				background-color:yellow;
+				font-family:"B612", sans-serif;
+				z-index:100;
+				text-align:center;
+			}
+			h3{
+				text-align:center;
+			}
+			nav > button{
+				border:none;
+				display:block;
+				margin:auto;
+				margin-bottom:10px;
+				background-color:purple;
+				border-radius:5px;
+				box-shadow:3px 3px 3px violet;
+				user-select:none;
+			}
+			button:hover{
+				transition:transform 0.5s;
+				transform: scale(1.19);
+			}
+			trash:hover{
+				transition:transform 0.5s;
+				transform:rotate(360deg);
+			}
+		</style>
+	</head>
+	<body>
+		<header>Pi Art</header>
+		<nav>
+			<h3>Tools</h3>
+			<button title="Add Random Rectangles" onclick="drawRects()">
+				<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>			
+				</button>
+			
+			<button title="Draw" onclick="drawWithPen()">
+				<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"><path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"></path><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon></svg>
+			</button>
+			<button title="Add Background Picture" onclick="drawPicture()">
+				<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M20.4 14.5L16 10 4 20"/></svg>
+			</button>
+			<button title="Add Command Icon" onclick="drawSVG(commandIcon)">
+				<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg>
+			</button>
+			<button title="Add Twitter Icon" onclick="drawSVG(twitterIcon)">
+				<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+			</button>
+			<button title="Add Paper Clip Icon" onclick="drawSVG(PaperClipIcon)">
+				<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+			</button>
+			<button title="Add Instagram Icon" onclick="drawSVG(InstagramIcon)">
+				<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="#FFD700"><path d="M16.98 0a6.9 6.9 0 0 1 5.08 1.98A6.94 6.94 0 0 1 24 7.02v9.96c0 2.08-.68 3.87-1.98 5.13A7.14 7.14 0 0 1 16.94 24H7.06a7.06 7.06 0 0 1-5.03-1.89A6.96 6.96 0 0 1 0 16.94V7.02C0 2.8 2.8 0 7.02 0h9.96zm.05 2.23H7.06c-1.45 0-2.7.43-3.53 1.25a4.82 4.82 0 0 0-1.3 3.54v9.92c0 1.5.43 2.7 1.3 3.58a5 5 0 0 0 3.53 1.25h9.88a5 5 0 0 0 3.53-1.25 4.73 4.73 0 0 0 1.4-3.54V7.02a5 5 0 0 0-1.3-3.49 4.82 4.82 0 0 0-3.54-1.3zM12 5.76c3.39 0 6.2 2.8 6.2 6.2a6.2 6.2 0 0 1-12.4 0 6.2 6.2 0 0 1 6.2-6.2zm0 2.22a3.99 3.99 0 0 0-3.97 3.97A3.99 3.99 0 0 0 12 15.92a3.99 3.99 0 0 0 3.97-3.97A3.99 3.99 0 0 0 12 7.98zm6.44-3.77a1.4 1.4 0 1 1 0 2.8 1.4 1.4 0 0 1 0-2.8z"/></svg>
+			</button>
+			<button title="Add Filled Spotify Logo" onclick="drawSVG(FilledSpotifyIcon)">
+				<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="#FFD700"><path d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zm4.87 17.66c-.2 0-.33-.06-.51-.18a12.03 12.03 0 0 0-6.2-1.6c-1.3 0-2.59.16-3.8.42-.19.04-.44.11-.59.11a.75.75 0 0 1-.75-.75c0-.5.29-.75.65-.82 1.48-.34 2.96-.53 4.49-.53 2.62 0 4.97.6 6.98 1.8.3.18.47.36.47.8 0 .43-.35.75-.74.75zm1.3-3.17c-.25 0-.42-.1-.6-.21a15.22 15.22 0 0 0-7.62-1.93c-1.51 0-2.83.21-3.91.5-.24.07-.37.14-.59.14a.94.94 0 0 1-.93-.95c0-.5.24-.86.74-1C6.61 10.67 8 10.4 10 10.4c3.15 0 6.18.78 8.57 2.2.4.24.55.53.55.96 0 .52-.41.94-.93.94zm1.5-3.7c-.25 0-.4-.06-.62-.18-2.18-1.3-5.55-2.02-8.8-2.02-1.63 0-3.29.16-4.8.57-.17.05-.4.14-.62.14-.64 0-1.13-.51-1.13-1.15 0-.65.4-1.02.84-1.15 1.71-.5 3.62-.74 5.7-.74 3.52 0 7.23.73 9.94 2.32.36.2.62.52.62 1.09 0 .65-.53 1.12-1.14 1.12z"/></svg>
+			</button>
+			<button title="Undo" onclick="commandZ()">
+				<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"><path d="M2.5 2v6h6M2.66 15.57a10 10 0 1 0 .57-8.38"/></svg>
+			</button>
+			<button title="Redo" onclick="commandY()">
+				<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38"/></svg>
+			</button>
+			<button title="Clear the Page" id="trash" onclick="clearPage()">
+				<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+			</button>
+			
+		</nav>
+		<main>
+			
+		</main>
+		<section>
+			<h3>Pen Settings</h3>
+			<h6>Pen width</h6>
+			<input id="penw" type="range" min = "1" max="10" step="1" value="1">
+			<h6>Color</h6>
+			<input id="penc" type="color"> 
+			<h3>Filters</h3>
+			<h6>Invert</h6>
+			<input id="invertf" type="range" min="1" max = "100" step="1" value="1" onchange="updateFilter()">
+			<h6>Saturate</h6>
+			<input id="saturatef" type="range" min="1" max = "200" step="1" value="100" onchange="updateFilter()">
+		</section>
+		<footer>
+			© IcyMoon19.acf4all.io Year 2020
+		</footer>
+		
+		
+		
+		<script>
+			var mainArea = document.querySelector("main");
+			var layers = [];
+			var linewidth = document.getElementById("penw");
+			var linecolor = document.getElementById("penc");
+			var cinvert = document.getElementById("invertf")
+			var csaturate = document.getElementById("saturatef")
+			
+			function updateFilter(){
+				var inv = cinvert.value;
+				var sat = csaturate.value;
+				mainArea.style.filter = `invert(${inv}%) saturate(${sat}%)`;
+			}
+			
+			function randomRange(rmin, rmax){
+				var n = Math.random()*(rmax-rmin);
+				return(n + rmin)
+			}
+			function randomRangeInt(rmin, rmax){
+				var n = randomRange(rmin, rmax);
+				return parseInt(n);
+			}
+			function drawRects(){
+				var bcolors = ["skyblue", "aqua", "aquamarine", "cornflowerBlue", "darkCyan", "blue", "darkBlue", "darkTurquoise", "dodgerBlue", "lightBlue", "lightCyan"];
+				
+				var gcolors = ["chartreuse", "darkOliveGreen", "green", "darkGreen", "darkKhaki", "forestGreen", "greenYellow", "lawnGreen", "lightGreen", "lime", "limeGreen", "paleGreen"];
+				
+				var rIndex1 = randomRangeInt(0, bcolors.length);
+				var rIndex2 = randomRangeInt(0, gcolors.length);
+				var rDiv = document.createElement("div");
+				rDiv.style.position = "absolute";
+				rDiv.style.top = randomRange(0, 40) + "vh";
+				rDiv.style.left = randomRange(0, 40) + "vw";
+				rDiv.style.width = randomRange(5, 40) + "vw";
+				rDiv.style.height = randomRange(5, 40) + "vh";
+				
+				layers.push(rDiv);
+				
+				//rDiv.style.backgroundColor = "lightblue"; 
+				var color1 = bcolors[rIndex1];
+				var color2 = gcolors[rIndex2];
+				rDiv.style.backgroundImage = `linear-gradient(${color1}, ${color2})`;
+				mainArea.appendChild(rDiv);
+			}
+			function drawSVG(iconName){
+				var count = randomRangeInt(5, 10);
+				while (count--){
+					var sDiv = document.createElement("div")
+					sDiv.style.position = "absolute";
+					sDiv.style.top = randomRange(0, 60) + "vh";
+					sDiv.style.left = randomRange(0, 60) + "vw";
+					sDiv.style.width = randomRange(10, 60) + "vw";
+					sDiv.style.height = randomRange(10, 60) + "vh";
+					sDiv.style.opacity = randomRange(0.01, 1);
+					sDiv.style.zIndex = layers.length;
+					layers.push(sDiv);
+					
+					var zoom = randomRangeInt(0.5, 5);
+					var rotation = randomRangeInt(45, 370);
+					sDiv.style.transform = `scale(${zoom}) rotate(${rotation}deg)`;
+					sDiv.innerHTML = iconName;
+					mainArea.appendChild(sDiv);
+					
+					
+				}
+			}
+			function clearPage(){
+				mainArea.innerHTML = "";
+			}
+			
+			
+			function drawWithPen(){
+				var pcanvas = document.createElement("canvas");
+				var msize = mainArea.getBoundingClientRect();
+				var isMouseDown = false;
+				
+				var offsetx = 60;//header height
+				var offsety = 80;//nav width
+				
+				//canvas size --> mainArea size
+				pcanvas.width = msize.width;
+				pcanvas.height = msize.height;
+				pcanvas.style.zIndex = layers.length;
+				pcanvas.style.cursor = "crosshair";
+				
+				pcanvas.style.position = "absolute";
+				pcanvas.style.top = 0;
+				pcanvas.style.left = 0;
+				
+				mainArea.appendChild(pcanvas);
+				layers.push(pcanvas);
+				var tools = pcanvas.getContext("2d");//Only for x and y
+				
+				pcanvas.onmousedown = startDrawing;
+				pcanvas.onmousemove = doDrawing;
+				pcanvas.onmouseup = stopDrawing;
+				
+				function startDrawing(pt){//pt stands for point
+					isMouseDown = true;
+					tools.beginPath();
+					tools.moveTo(pt.x -offsetx, pt.y -offsetx)
+					tools.strokeStyle = linecolor.value;
+					tools.lineWidth = linewidth.value;
+				}
+				function doDrawing(pt){
+					if(isMouseDown){
+						tools.lineTo(pt.x -offsetx, pt.y -offsetx);
+						tools.stroke();
+					}
+					
+				}
+				function stopDrawing(pt){
+					tools.closePath();
+					isMouseDown = false;
+				}
+			}
+			function drawPicture(){
+				var photoUrl = [
+				'https://post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/02/322868_1100-1100x628.jpg',
+				'https://upload.wikimedia.org/wikipedia/commons/4/41/Sunflower_from_Silesia2.jpg', 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Pink_flower.jpg',
+				'https://upload.wikimedia.org/wikipedia/commons/d/d3/Nelumno_nucifera_open_flower_-_botanic_garden_adelaide2.jpg'
+				];
+				var pIndex = randomRangeInt(0, photoUrl.length);
+				
+				//Enter URL or use one
+				var myPhoto = prompt("Add a photo URL here(JPG, JPEG, PNG):", photoUrl[pIndex]);
+				
+				var pcanvas = document.createElement("canvas");
+				var msize = mainArea.getBoundingClientRect();
+				var tools = pcanvas.getContext("2d");
+				
+				pcanvas.height = msize.height;
+				pcanvas.width = msize.width;
+				
+				//save to layers
+				pcanvas.style.zIndex = layers.length;
+				layers.push(pcanvas);
+				
+				
+				
+				var image = new Image();
+				image.onload = function drawOnCanvas(){
+					tools.drawImage(image, 0, 0, msize.width, msize.height);
+				}
+				image.src = myPhoto;
+				mainArea.appendChild(pcanvas);
+			}
+			function commandY(){
+				
+			}
+			function commandZ(){
+				if(layers.length > 0){
+					var lastpaper = layers.pop();//removes last layers
+					mainArea.removeChild(lastlayer);
+				}
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			var commandIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg>`;
+			var twitterIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#00FFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>`
+			var PaperClipIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#7FFF00" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>`;
+			var InstagramIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="#FF00FF"><path d="M16.98 0a6.9 6.9 0 0 1 5.08 1.98A6.94 6.94 0 0 1 24 7.02v9.96c0 2.08-.68 3.87-1.98 5.13A7.14 7.14 0 0 1 16.94 24H7.06a7.06 7.06 0 0 1-5.03-1.89A6.96 6.96 0 0 1 0 16.94V7.02C0 2.8 2.8 0 7.02 0h9.96zm.05 2.23H7.06c-1.45 0-2.7.43-3.53 1.25a4.82 4.82 0 0 0-1.3 3.54v9.92c0 1.5.43 2.7 1.3 3.58a5 5 0 0 0 3.53 1.25h9.88a5 5 0 0 0 3.53-1.25 4.73 4.73 0 0 0 1.4-3.54V7.02a5 5 0 0 0-1.3-3.49 4.82 4.82 0 0 0-3.54-1.3zM12 5.76c3.39 0 6.2 2.8 6.2 6.2a6.2 6.2 0 0 1-12.4 0 6.2 6.2 0 0 1 6.2-6.2zm0 2.22a3.99 3.99 0 0 0-3.97 3.97A3.99 3.99 0 0 0 12 15.92a3.99 3.99 0 0 0 3.97-3.97A3.99 3.99 0 0 0 12 7.98zm6.44-3.77a1.4 1.4 0 1 1 0 2.8 1.4 1.4 0 0 1 0-2.8z"/></svg>`;
+			var FilledSpotifyIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="#00FA9A"><path d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zm4.87 17.66c-.2 0-.33-.06-.51-.18a12.03 12.03 0 0 0-6.2-1.6c-1.3 0-2.59.16-3.8.42-.19.04-.44.11-.59.11a.75.75 0 0 1-.75-.75c0-.5.29-.75.65-.82 1.48-.34 2.96-.53 4.49-.53 2.62 0 4.97.6 6.98 1.8.3.18.47.36.47.8 0 .43-.35.75-.74.75zm1.3-3.17c-.25 0-.42-.1-.6-.21a15.22 15.22 0 0 0-7.62-1.93c-1.51 0-2.83.21-3.91.5-.24.07-.37.14-.59.14a.94.94 0 0 1-.93-.95c0-.5.24-.86.74-1C6.61 10.67 8 10.4 10 10.4c3.15 0 6.18.78 8.57 2.2.4.24.55.53.55.96 0 .52-.41.94-.93.94zm1.5-3.7c-.25 0-.4-.06-.62-.18-2.18-1.3-5.55-2.02-8.8-2.02-1.63 0-3.29.16-4.8.57-.17.05-.4.14-.62.14-.64 0-1.13-.51-1.13-1.15 0-.65.4-1.02.84-1.15 1.71-.5 3.62-.74 5.7-.74 3.52 0 7.23.73 9.94 2.32.36.2.62.52.62 1.09 0 .65-.53 1.12-1.14 1.12z"/></svg>`
+		</script>
+		
+	</body>
+</html>
