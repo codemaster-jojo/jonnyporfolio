@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<!--
+Theme: August App Challenge - Time Management App 
+Author: The Monthly App Challenge Team 
+(Keep this section and leave your name as the author!) 
+=================================================================================================================
+
+Resources: 
+	(These are just some helpful links that have some detailed instructions on making related applications. 
+	You might want to take a look to get some cool ideas!) 
+	https://freshman.tech/todo-list/
+	https://www.youtube.com/watch?v=oMBXdZzYqEk
+-->
+
+<html>
+	<head>
+		<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+		<link rel = "icon" href = "https://www.pinclipart.com/picdir/big/105-1058907_see-the-source-image-time-management-icon-clipart.png">
+		<title>Productivity App</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<style>
+		:root {
+	    	--darkteal: #0b5460;
+	    	--primaryteal: #04908a;
+	    	--lightteal: #86d7c8;
+	    	--pink: #ffebe4;
+	    	--gold: #ffe599;
+	    	--black: #202020;
+	    	--background: #b7ddb0;
+	    	--text: #3f541e;
+	    	--panelwd: 27vw;
+	    	--panelmargin:10vw;
+	    }
+	    body{
+	    	background:url("https://media2.giphy.com/media/d3yxg15kJppJilnW/giphy.gif") no-repeat center center fixed;
+	    	color:#333;
+	    	background-size:cover;
+	    	font-family: 'Oswald', sans-serif;
+	    }
+	    .dark-mode{
+	    	background:linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://media2.giphy.com/media/d3yxg15kJppJilnW/giphy.gif") no-repeat center center fixed;
+	    	background-size:cover;
+	    	color:white;
+	    }
+	    h1{
+	    	font-weight:light;
+	    	font-size:30px;
+	    }
+	    
+	    #addtask{
+	    	padding:5px 40px 20px 30px;
+	    	box-shadow:0 1px 3px 0 rgba(0,0,0,.3);
+	    	margin:30px 0px;
+	    	margin-top:10px;
+	    	line-height: 1.5;
+	    	border-radius:5px;
+	    	min-width:400px;
+	    	max-width:500px;
+	    }
+	    input{
+	    	margin:10px 0px;
+	    }
+	    .container{
+	    	display: inline-block;
+	    	/*grid-gap: 1em;*/
+	    	position:fixed;
+	    	top:0;
+	    	left:var(--panelmargin);
+	    	width:var(--panelwd);
+	    	min-width:250px;
+	    	background:rgba(0,0,0, 0.1);
+	    	height:100vh;
+	    	overflow:auto;
+	    	overflow-x: hidden;
+	    	box-shadow:0 1px 3px 0 rgba(0,0,0,.3);
+	    	color:#333;
+	    }
+	    .main{
+	    	display:inline-block;
+	    	position:fixed;
+	    	top:0;
+	    	left:calc(var(--panelwd) + var(--panelwd) - 80px);
+	    	overflow-y: auto;
+	    }
+	    .container > div{
+	    	background-color: var(--gold);
+	    	padding: 1em;
+	    	margin:20px 10px;
+	    	height: auto;
+	    	border-radius:4px;
+	    	box-shadow: 0 1px 3px 0 rgba(0,0,0,.1);
+	    	overflow: auto;
+	    }
+	    .container > div:nth-child(odd){
+	    	background-color: var(--pink);
+	    }
+	    #btn{
+	    	font-family: 'Oswald', sans-serif;
+	    	background:rgba(0,0,0,0.1);
+	    	padding:3px 40px;
+	    	border:none;
+	    	border-radius:4px;
+	    	outline:none;
+	    }
+	    #btn:hover{
+	    	transition:.3s ease;
+	    	background:rgba(0,0,0,0.3);
+	    }
+	    #toggle{
+	    	right:4px;
+	    	position:fixed;
+	    	opacity:0.5;
+	    }
+	    #toggle:hover{
+	    	transition:.3s ease;
+	    	opacity:0.7;
+	    }
+	    #clear{
+	    	right:6px;
+	    	top:50px;
+	    	position:fixed;
+	    	opacity:0.5;
+	    }
+	    #clear:hover{
+	    	transition:.3s ease;
+	    	opacity:0.7;
+	    }
+	    textarea {
+	    	resize: none;
+	    	white-space: pre-wrap;
+	    }
+	    input[type="checkbox"] {
+		  display: none;
+		}
+	    .done span{
+	    	text-decoration: line-through;
+	    }
+	    .tick {
+		  width: 10px;
+		  height: 10px;
+		  border: 3px solid #333;
+		  margin:px;
+		  border-radius: 50%;
+		  display: inline-flex;
+		  justify-content: center;
+		  align-items: center;
+		  cursor: pointer;
+		}
+		.tick::before {
+		  content: '✓';
+		  font-size: 10px;
+		  display: none;
+		}
+		.done .tick::before {
+		  display: inline-flex;
+		}
+		
+		.delete-todo {
+		  border: 10px;
+		  background: white;
+		  height:20px;
+		  cursor: pointer;
+		  margin-left:20px;
+		}
+		#date{
+	    	font-size:40px;
+	    	font-family: 'Abril Fatface', cursive;
+		}
+		#time{
+			    font-size:60px;
+			    font-family: 'Abril Fatface', cursive;
+		}
+		</style>
+	</head>
+	<body onload="startTime(); getDate();">
+		<button onclick="hide()" id="hideShowButton"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"><path d="M19 12H6M12 5l-7 7 7 7"/></svg></button>
+		<div class = "container" id = "container">
+			Filter By
+				<!--<select id="colors" onchange="filt()">-->
+				<!--	<option value="rgb(144, 212, 152)">Green</option>-->
+				<!--	<option value="rgb(245, 135, 127)">Red</option>-->
+				
+				<!--	<option value="rgb(192, 223, 250)">Blue</option> -->
+				<!--	<option value="rgb(255, 229, 153)">Yellow</option>-->
+				<!--</select>-->
+				<select id="colors" onchange="filt()">
+					<option value="#90d498">Green</option>
+					<option value="#f5877f">Red</option>
+					<option value="#c0dffa">Blue</option> 
+					<option value="#ffe599">Yellow</option>
+					<option value="#FFFFFF">White</option>
+				</select>
+		</div>
+		
+		
+		<div class = "main">
+			<h1>My Time Management App</h1>
+			<span id="date"></span>
+			<div id ="timer">FOCUS</div>
+				<button id ="countButton">Focus for 30 min!</button>
+			<br>
+			<span id = "time"></span>
+			<form id = "addtask">
+				<h2>Add Task</h2>
+				<label for = "task">Task:  </label>
+				<input type = "text" name = "task" id = "tasktitle">
+				<br>
+				<label for = "dueDate">Due Date:  </label>
+				<input type="date" id="dueDate" name="trip-start"><br>
+				
+				
+				<label for="priorit" id="priorLabel">Priority:  </label>
+				<span id="priority" name="priorit"><button onclick="negChange()">-</button><span id="prioprio"> 5 </span><button onclick="posChange()">+</button></span><br>
+				
+				<!--<input type="range" id="priority" name="priority" step="1" value="5" min="1" max="10" onchange="changePrior()">-->
+				<label for = "detail">Detail:</label>
+				<br>
+				<textarea name = "detail" id = "detail" rows = "4" cols = "50" style="white-space: pre-line;"></textarea>
+				<br>
+				<label for = "color">Color Code:</label>
+				<br>
+				<input type="radio" name="color" value="#f5877f" /> Red
+				<input type="radio" name="color" value="#90d498" /> Green
+				<input type="radio" name="color" value="#c0dffa" /> Blue
+				<input type = "radio" name = "color" value ="#ffe599" /> Yellow
+				<br>
+				<input type = "submit" id = "btn" value = "Add">
+			</form>
+		</div>
+		<div id = "toggle">
+		<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24" fill="black" width="24px" height="24px"><g><rect fill="none" height="24" width="24"/></g><g><g><g><path d="M11.1,12.08C8.77,7.57,10.6,3.6,11.63,2.01C6.27,2.2,1.98,6.59,1.98,12c0,0.14,0.02,0.28,0.02,0.42 C2.62,12.15,3.29,12,4,12c1.66,0,3.18,0.83,4.1,2.15C9.77,14.63,11,16.17,11,18c0,1.52-0.87,2.83-2.12,3.51 c0.98,0.32,2.03,0.5,3.11,0.5c3.5,0,6.58-1.8,8.37-4.52C18,17.72,13.38,16.52,11.1,12.08z"/></g><path d="M7,16l-0.18,0C6.4,14.84,5.3,14,4,14c-1.66,0-3,1.34-3,3s1.34,3,3,3c0.62,0,2.49,0,3,0c1.1,0,2-0.9,2-2 C9,16.9,8.1,16,7,16z"/></g></g></svg>
+        </div>
+        <div id="clear">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+        </div>
+		<div id="addDummy">
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="18px" height="18px"><path d="M0 0h24v24H0z" fill="none"/><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 14h-3v3h-2v-3H8v-2h3v-3h2v3h3v2zm-3-7V3.5L18.5 9H13z"/></svg>
+        </div>
+		
+		
+		<script>
+		
+		
+		// This is the array that will hold the todo list items
+		let todoItems = [];
+		// This function will create a new todo object based on the
+		// text that was entered in the text input, and push it into
+		// the `todoItems` array
+		var prio = document.getElementById("prioprio");
+		var priori = 5;
+		var taskBox = document.querySelector("#container");
+		
+		
+		
+		function filt(){
+			const ref = localStorage.getItem('todoItemsRef');
+			var stopFilt = true;
+		 	var colorValue = document.getElementById("colors").value;
+		 	
+			todoItems = JSON.parse(ref);
+			todoItems.forEach(t => {
+				console.log(colorValue);
+				console.log(t.color);
+				
+				if(t.color == colorValue){
+			 		console.log("No need to filter this one");
+			 		t.checked = false;
+			 	}
+			 	else{
+			 		console.log("Need to filter this one");
+			 		t.checked = true;
+			 	}
+			 	
+			});
+			todoItems.forEach(t => {
+				renderTodo(t);
+			});
+		
+			
+		 }
+		 
+		 
+		 
+		var hideShowButton = document.getElementById("hideShowButton");
+		function hide(){
+			var arrowLeft = '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"><path d="M19 12H6M12 5l-7 7 7 7"></path></svg>';
+			var arrowRight = '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="bevel"><path d="M5 12h13M12 5l7 7-7 7"></path></svg>';
+			
+			if(hideShowButton.innerHTML == arrowLeft){
+				container.style.display = "none";
+				
+				hideShowButton.innerHTML = arrowRight;
+			}
+			else if(hideShowButton.innerHTML == arrowRight){
+				container.style.display = "inline-block";
+				hideShowButton.innerHTML = arrowLeft;
+			}
+			else{
+				console.log("nothing");
+			}
+		}
+		function negChange(){
+			if(priori>0){
+				priori = priori-1;
+				prio.innerHTML = ` ${priori} `;
+			}
+			
+		}
+		function posChange(){
+			if(priori<10){
+				priori = priori+1;
+				prio.innerHTML = ` ${priori} `;
+			}
+		}
+		function addTodo(text, detail, color, dueDate, priority) {
+			const todo = {
+				text,
+				detail,
+				color,
+				dueDate,
+				priority,
+				checked: false,
+				id: Date.now(),
+			};
+			todoItems.push(todo);
+			renderTodo(todo);
+		}
+		
+		function renderTodo(todo) {
+		    
+			// Select the first element with a class of `js-todo-list`
+			const list = document.getElementById('container');
+			const item = document.querySelector(`[data-key='${todo.id}']`);
+			// Use the ternary operator to check if `todo.checked` is true
+			// if so, assign 'done' to `isChecked`. Otherwise, assign an empty string
+			
+			  
+			  if (todo.deleted) {
+			    item.remove();
+			    return
+			  }
+			
+			const isChecked = todo.checked ? 'done': '';
+			// Create an `li` element and assign it to `node`
+			const mydiv = document.createElement("div");
+			// Set the class attribute
+			mydiv.setAttribute('class', `todo-item ${isChecked}`);
+			// Set the data-key attribute to the id of the todo
+			mydiv.setAttribute('data-key', todo.id);
+			// Set the contents of the `li` element created above
+			mydiv.innerHTML = `
+			<input id="${todo.id}" type="checkbox"/>
+			<label for="${todo.id}" class="tick js-tick"></label>
+			<span style = "font-weight:800;">${todo.text}</span>
+			<button class="delete-todo js-delete-todo" style="float:right">x</button><br>
+			<span>Priority: ${todo.priority}</span><br>
+		    <span>Due: ${todo.dueDate}</span>
+		    <br>
+		    <span style = "white-space: pre-wrap;">Details: ${todo.detail}</span></div>
+		    `;
+		    // node.appendChild(document.createElement("div200"));
+		    // const node2 = document.getElementById("div200");
+		    // node2.innerHTML = `
+		    // <span>${todo.detail}</span>
+		    // `;
+		    // node2.style.whiteSpace ="pre-line";
+		    
+		    
+		    mydiv.style.backgroundColor = todo.color;
+
+		    // Append the element to the DOM as the last child of
+		    // the element referenced by the `list` variable
+
+			 // If the item already exists in the DOM
+			  if (item) {
+			    // replace it
+			    list.replaceChild(mydiv, item);
+			  } else {
+			    // otherwise append it to the end of the list
+			    list.append(mydiv);
+			    localStorage.setItem('todoItemsRef', JSON.stringify(todoItems));
+			  }
+			
+		}
+		
+		// Select the form element
+		const form = document.getElementById('addtask');
+		// Add a submit event listener
+		form.addEventListener('submit', event => {
+			// prevent page refresh on form submission
+			event.preventDefault();
+			// select the text input
+			const input = document.getElementById('tasktitle');
+			const detail = document.getElementById('detail');
+			const color = document.querySelector('input(name="color"):checked').value;
+			const dueDate = document.getElementById('dueDate').value;
+			const priority = document.getElementById('prioprio').innerText;
+			// Get the value of the input and remove whitespace
+			const text = input.value.trim();
+			const description = detail.value;
+			if (text !== '') {
+				addTodo(text, description, color, dueDate, priority);
+		    	input.value = '';
+		    	detail.value = '';
+		    	color.value = '';
+		    	priority.value = '';
+		    	input.focus();
+			}
+		});
+		
+		function toggleDone(key) {
+			const index = todoItems.findIndex(item => item.id === Number(key));
+			todoItems[index].checked = !todoItems[index].checked;
+			renderTodo(todoItems[index]);
+		}
+			
+		const list = document.querySelector('.container');
+		list.addEventListener('click', event => {
+		  if (event.target.classList.contains('js-tick')) {
+			    const itemKey = event.target.parentElement.dataset.key;
+			    toggleDone(itemKey);
+			  }
+		 if (event.target.classList.contains('js-delete-todo')) {
+		    const itemKey = event.target.parentElement.dataset.key;
+		    deleteTodo(itemKey);
+		  }
+		});
+		
+		function deleteTodo(key) {
+		  const index = todoItems.findIndex(item => item.id === Number(key));
+		  const todo = {
+		    deleted: true,
+		    ...todoItems[index]
+		  };
+		  todoItems = todoItems.filter(item => item.id !== Number(key));
+		  renderTodo(todo);
+		}
+
+		
+		// IMPORTANT STEP! Store user settings to browser! 
+		document.addEventListener('DOMContentLoaded', () => {
+			const ref = localStorage.getItem('todoItemsRef');
+			if (ref) {
+				todoItems = JSON.parse(ref);
+				todoItems.forEach(t => {
+					renderTodo(t);
+				});
+			}
+		});
+		window.onload = function(){
+			const ref = localStorage.getItem('todoItemsRef');
+			if(ref) {
+				todoItems.forEach(t => {
+					var thisDueDate = t.dueDate.substring(6,7).concat("/", t.dueDate.substring(8,10), "/", t.dueDate.substring(0,4));
+					if(dt.toLocaleDateString() == thisDueDate){
+						alert(t.text + " is due today!!!")
+					}
+					
+				})
+			}
+		}
+		
+		function startTime() {
+			var today = new Date();
+			var h = today.getHours();
+			var ampm = "A.M.";
+			if(h > 12){
+				h = h - 12;
+				ampm = "P.M.";
+			}
+			var m = today.getMinutes();
+			var s = today.getSeconds();
+			m = checkTime(m);
+			s = checkTime(s);
+			document.getElementById('time').innerHTML = h + ":" + m + ":" + s + " " + ampm;
+			var t = setTimeout(startTime, 1000);
+		}
+		function checkTime(i) {
+			if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+			return i;
+		}
+		
+		function getDate() {
+			  var today = new Date();
+			  var dd = today.getDate();
+			  var mm = today.getMonth()+1; //January is 0!
+			  var yyyy = today.getFullYear();
+			
+			  if(dd<10) {
+			      dd = '0'+dd
+			  } 
+			
+			  if(mm<10) {
+			      mm = '0'+mm
+			  } 
+			
+			  today = yyyy + '-' + mm + '-' + dd;
+			  console.log(today);
+			  document.getElementById("dueDate").value = today;
+			}
+			
+		// UTILITIES
+		function toggle() {
+			var element = document.body;
+			element.classList.toggle("dark-mode");
+		}
+		
+		function clear(){
+			localStorage.removeItem("todoItemsRef");
+			location.reload();
+		}
+		var dt = new Date();
+		document.getElementById("date").innerHTML = dt.toLocaleDateString();
+		
+		function addaDummy(){
+			addTodo("Title", "Detail", "#FFFFFF", "mm/dd/yyyy", "Priority(1-10)")
+		}
+		
+		var sec = 1800;
+	    countDiv = document.getElementById("timer");
+	    countButton = document.getElementById("countButton");
+	    
+	    var clicked = false;
+	    var countdown;
+	    
+	    countButton.onclick = function() {
+	    	if(clicked == false){
+	    		clicked = true;
+	    		countButton.innerHTML = "reset";
+		    	countDown = setInterval(secpass, 1000);
+	    	}
+	    	else{
+	    		console.log('reset')
+	    		sec = 1800;
+	    		clearInterval(countdown);
+	    	}
+	    }
+	
+		function secpass() {
+		    'use strict';
+		    var min = Math.floor(sec / 60),
+		    remSec  = sec % 60;
+		    
+		    if (remSec < 10) {
+		        remSec = '0' + remSec;
+		    }
+		    if (min < 10) {
+		        min = '0' + min;
+		    }
+		    countDiv.innerHTML = min + ":" + remSec;
+		    if (sec > 0) {
+		        sec = sec - 1;
+		    } else {
+		        clearInterval(countDown);
+		        countDiv.innerHTML = 'countdown done';
+		    }
+		}
+		
+		document.getElementById("toggle").addEventListener("click",toggle);
+		document.getElementById("clear").addEventListener("click",clear);
+		document.getElementById("addDummy").addEventListener("click", addaDummy);
+		</script>
+	</body>
+</html>
