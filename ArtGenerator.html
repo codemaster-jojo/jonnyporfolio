@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2&display=swap" rel="stylesheet">
+	<link rel="icon" href="https://www.clker.com/cliparts/7/e/c/a/1368417721587803417icon-palette-brush-3-md.png">
+	<title>Art Generator</title>
+<!--Theme-->
+<style>
+	:root {
+		/*--maroon: #7f2d41;*/
+		/*--tan: #f2cdac;*/
+		--maroon: purple;
+		--tan: yellow;
+	}
+	h1 {
+		font-family: 'Poiret One', cursive;
+		color: var(--tan);
+		font-size:50px;
+	}
+	p {
+		font-family: 'Baloo Tamma 2', cursive;
+		color: var(--tan);
+		font-size:20px;
+	}
+</style>
+
+<!--Grid Layout-->
+<style>
+	.header { grid-area: header; }
+	.menu { grid-area: menu; }
+	.main { grid-area: main; }
+	
+	.grid-container {
+		display: grid;
+		grid-template-areas:
+			'header menu'
+			'main menu';
+	  
+		grid-gap: 1vh;
+		/*line color*/
+		background-color: var(--tan);
+		padding: 1vh;
+		grid-template-rows: 17vh 80vh;
+		grid-template-columns: 80vw 18.5vw;
+	}
+	
+	.grid-container > div {
+		/*background color*/
+		background-color: var(--maroon);
+		text-align: center;
+		padding: 20px 0;
+		font-size: 30px;
+	}
+	
+	body {
+		margin: 0;
+	}
+	input{
+		max-width:70px;
+	}
+	
+</style>
+
+<!--Form-->
+	<style>
+		.stats{
+			color: var(--tan);
+			font-size: 20px;
+    		font-weight: 300;
+    		line-height: 1.5;
+    		font-family: 'Baloo Tamma 2', sans-serif;
+		}
+		#submit:hover{
+			background-color: var(--tan);
+			transition:.3s ease;
+		}
+	</style>
+	<!--My Style-->
+	<style>
+		#byMe{
+			color: var(--tan);
+		}
+	</style>
+</head>
+<body>
+
+<div class="grid-container">
+	<div class="header">
+		<h1 style="margin:0">Art Generator</h1>
+		<a href="https://www.youtube.com/channel/UC28LJ3xXFirkPAGxJScnrCg?view_as=subscriber" target="_blank"><p style="margin:0">Made By Jonny Pi</p></a>
+	</div>
+	<div class="menu">
+		<form class = "stats" id = "myForm">
+				<div>
+				
+				</div>
+				<!--<div>
+				<label for="randomMaybe">Random:</label>
+				<select id = "randomMaybe">
+					<option value="yes">Yes, I want very random</option>
+					<option value="no">No, I don't want very random</option>
+				</select>
+				<br>
+				<label for="shape">Shape:</label>
+				<select id = "shape" onchange="isPoly()">
+					<option value="triangle">Triangle</option>
+					<option value="rectangle">4-Side Shape</option>
+					<option value="circle">Circle</option>
+					<option value="line">Line</option>
+					<option value="star">Star</option>
+					<option value="poly">Polygon</option>
+				</select>
+				</div>-->
+				<div id="TheShapes">
+					<label style="font-size:20px;margin:0">SHAPES:</label><br>
+					<input type="checkbox" id="circle" checked>Circle  
+					<input type="checkbox" id="line" checked>Line
+					<input type="checkbox" id="triangle" checked>Triangle  <br>
+					<input type="checkbox" id="quadrilateral" checked>Rectangle
+					<input type="checkbox" id="ngon" checked>N-Gon  
+					<input type="checkbox" id="star" checked>Star<br>
+				</div>
+				<hr>
+				<div id="Randomization">
+					<label style="font-size:20px;margin:0">RANDOMIZATION:</label><br>
+					<input type="checkbox" id="ranAngle" checked>Angle
+					<input type="checkbox" id="ranOpacity" checked>Opacity
+					<input type="checkbox" id="ranColor" checked>Color<br>
+				</div>
+				<hr>
+				<div id="Parameters">
+					<label style="font-size:20px;margin:0">PARAMETERS:</label><br>
+					<label for="maxNum">Max size of Shape:</label>
+					<input type = "number" id = "maxNum" name = "maxNum" value = "80" title = "maxNum" required><br>
+					<label for="minNum">Min size of Shape:</label>
+					<input type = "number" id = "minNum" name = "minNum" value = "20" title = "minNum" required><br>
+					<label for="density">Number of Shapes:</label>
+					<input type = "number" id = "density" name = "density" value = "10" title = "density" required><br>
+					<label for="color">Shape Color:</label>
+					<input type="color" id="color" name="color" placeholder="#FFFFFF" value="#FFA500" title = "color" required><br>
+				</div>
+				<hr>
+				<div id="filter">
+					<label style="font-size:20px;margin:0">FILTERS:</label><br>
+					<label for="invertf">Invert</label>
+					<input id="invertf" type="range" min="1" max = "100" step="1" value="1" onchange="updateFilter()"><br>
+					<label for="saturatef">Saturate</label>
+					<input id="saturatef" type="range" min="1" max = "200" step="1" value="100" onchange="updateFilter()"><br>
+					<label for="blurf">Blur</label>
+					<input id="blurf" type="range" min="1" max = "10" step="1" value="0" onchange="updateFilter()"><br>
+					<label for="contrastf">Contrast</label>
+					<input id="contrastf" type="range" min="1" max = "100" step="1" value="100" onchange="updateFilter()"><br>
+					<label for="brightnessf">Brightness</label>
+					<input id="brightnessf" type="range" min="1" max = "100" step="1" value="100" onchange="updateFilter()"><br>
+				</div>
+				<hr>
+			<input type="submit" value="Update" id="submit">
+			
+			</form>
+			<button id = "clearBtn">Clear</button>
+			<button id= "saveBtn">Preview and Save</button>
+	</div>
+	
+	<div class="main">
+		<canvas id="artCanvas" width="750" height="500" style="border:1px solid white;">
+			Your browser does not support the canvas element.
+		</canvas>
+	</div>  
+
+</div>
+
+
+<script>
+	// establishing default variables 
+	var colr = "#FFFFFF";
+	var canvasWidth = 750;
+	var canvasHeight = 500;
+	// var shape = "Rectangle";
+	var maxSize = 80;
+	var minSize = 20;
+	var density = 10;
+	var sidesDiv = document.getElementById("sidesForPoly");
+	// takes user input
+	var form = document.getElementById("myForm");
+	var clearBtn = document.getElementById("clearBtn");
+	
+	var cinvert = document.getElementById("invertf");
+	var csaturate = document.getElementById("saturatef");
+	var cblur = document.getElementById("blurf");
+	var ccontrast = document.getElementById("contrastf");
+	var cbrightness = document.getElementById("brightnessf");
+
+	function updateFilter(){
+		var inv = cinvert.value;
+		var sat = csaturate.value;
+		var blr = cblur.value;
+		var cont = ccontrast.value;
+		var brt = cbrightness.value;
+		canvas.style.filter = `invert(${inv}%) saturate(${sat}%) blur(${blr}px) contrast(${cont}%) brightness(${brt})`;
+	}
+	function handleForm(event) {
+		event.preventDefault(); 
+		colr = document.getElementById("color").value;
+		// shape = document.getElementById("shape").value;
+		maxSize = document.getElementById("maxNum").value;
+		minSize = document.getElementById("minNum").value;
+		density = document.getElementById("density").value;
+		//console.log(colr, shape, maxSize, minSize, density);
+		draw();
+	} 
+	form.addEventListener('submit', handleForm);
+	clearBtn.addEventListener('click', function(){
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+	});
+	
+	var canvas = document.getElementById("artCanvas");
+	var ctx = canvas.getContext("2d");
+	
+	saveBtn.addEventListener('click', function(){
+		var downloadImg = canvas.toDataURL("image/png");
+		document.write('<img src="'+downloadImg+'"/>');
+	});
+	/*
+	ctx.fillStyle = "#EFBE93";
+	ctx.fillRect(100,300,150,75);
+	
+	ctx.fillStyle = "#C9806A";
+	ctx.fillRect(300,200,200,300);
+	*/
+	
+	var gradient = ctx.createLinearGradient(20,0, 220,0);
+	gradient.addColorStop(0, '#5a1838');
+	gradient.addColorStop(.3, '#EFBE93');
+	gradient.addColorStop(1, '#C9806A');
+	
+	function draw(){
+		for (d=0; d < density; d++){
+			artCanvas.style.width = `${canvasWidth}px`;
+			artCanvas.style.height = `${canvasHeight}px`;
+			console.log(canvasWidth, canvasHeight);
+			var width = Math.floor( Math.random() * (Number(maxSize) - Number(minSize))) + Number(minSize);
+			var height = Math.floor( Math.random() * (Number(maxSize) - Number(minSize))) + Number(minSize);
+			var isCircle = document.getElementById("circle").checked;
+			var isLine = document.getElementById("line").checked;
+			var isTriangle = document.getElementById("triangle").checked;
+			var isQuadrilateral = document.getElementById("quadrilateral").checked;
+			var isStar = document.getElementById("star").checked;
+			var isNGon = document.getElementById("ngon").checked;
+			var isRanOpacity = document.getElementById("ranOpacity").checked;
+			var isRanColor = document.getElementById("ranColor").checked;
+			var isRanAngle = document.getElementById("ranAngle").checked;
+			
+			var startX = Math.floor(Math.random() * canvasWidth);
+			var startY = Math.floor(Math.random() * canvasHeight);
+			
+			
+			
+
+				if (isCircle){
+					startX = Math.floor(Math.random() * canvasWidth);
+					startY = Math.floor(Math.random() * canvasHeight);
+					ctx.save();
+					ctx.translate(startX, startY);
+					if(isRanAngle){
+						var randomAngle = Math.random() * Math.PI * 2;
+						ctx.rotate(randomAngle);
+					}
+					if(isRanColor){
+						var colorR = Math.floor(Math.random() * 256);
+						var colorG = Math.floor(Math.random() * 256);
+						var colorB = Math.floor(Math.random() * 256);
+						colr = `rgb(${colorR}, ${colorG}, ${colorB})`;
+					}
+					if(isRanOpacity){
+						ctx.globalAlpha = Math.random();
+					}
+					else{
+						ctx.globalAlpha = 1;
+					}
+					ctx.fillStyle = colr;
+					var radius = width/2;
+					ctx.beginPath();
+					ctx.arc(0, 0, radius, 0, 2 * Math.PI, false);
+					ctx.fill();
+					ctx.restore();
+				}
+				if (isLine){
+					startX = Math.floor(Math.random() * canvasWidth);
+					startY = Math.floor(Math.random() * canvasHeight);
+					ctx.save();
+					ctx.translate(startX, startY);
+					if(isRanAngle){
+						var randomAngle = Math.random() * Math.PI * 2;
+						ctx.rotate(randomAngle);
+					}
+					if(isRanColor){
+						var colorR = Math.floor(Math.random() * 256);
+						var colorG = Math.floor(Math.random() * 256);
+						var colorB = Math.floor(Math.random() * 256);
+						colr = `rgb(${colorR}, ${colorG}, ${colorB})`;
+					}
+					if(isRanOpacity){
+						ctx.globalAlpha = Math.random();
+					}
+					else{
+						ctx.globalAlpha = 1;
+					}
+					ctx.fillStyle = colr;
+					var whichDirection = Math.random();
+					ctx.lineWidth = Math.floor(Math.random() * 10);
+					ctx.beginPath();
+					ctx.moveTo(0, 0);
+					if(whichDirection>0.50){
+						ctx.lineTo(0, 0 + Math.floor(Math.random() * height * 10));
+					}
+					else if(whichDirection<=0.50){
+					 	ctx.lineTo(0 + Math.floor(Math.random() * height * 10), 0);
+					 	
+					}
+					ctx.strokeStyle = colr;
+					ctx.stroke();
+					ctx.restore();
+				}
+				if (isTriangle){
+					startX = Math.floor(Math.random() * canvasWidth);
+					startY = Math.floor(Math.random() * canvasHeight);
+					ctx.save();
+					ctx.translate(startX, startY);
+					if(isRanAngle){
+						var randomAngle = Math.random() * Math.PI * 2;
+						ctx.rotate(randomAngle);
+					}
+					if(isRanColor){
+						var colorR = Math.floor(Math.random() * 256);
+						var colorG = Math.floor(Math.random() * 256);
+						var colorB = Math.floor(Math.random() * 256);
+						colr = `rgb(${colorR}, ${colorG}, ${colorB})`;
+					}
+					if(isRanOpacity){
+						ctx.globalAlpha = Math.random();
+					}
+					else{
+						ctx.globalAlpha = 1;
+					}
+					ctx.fillStyle = colr;
+					if(Math.floor(Math.random() * 10 % 2) == 0)
+						height = 0 - height;
+				
+					var sub = Math.floor(Math.random() * 4  + 1);
+					// the triangle
+					ctx.beginPath();
+					ctx.moveTo(0, 0);
+					ctx.lineTo(0+width, 0);
+					ctx.lineTo(0+width/sub, 0+height);
+					ctx.closePath();
+					ctx.fill();
+					ctx.restore();
+				}
+				if (isQuadrilateral){
+					startX = Math.floor(Math.random() * canvasWidth);
+					startY = Math.floor(Math.random() * canvasHeight);
+					ctx.save();
+					ctx.translate(startX, startY);
+					if(isRanAngle){
+						var randomAngle = Math.random() * Math.PI * 2;
+						ctx.rotate(randomAngle);
+					}
+					if(isRanColor){
+						var colorR = Math.floor(Math.random() * 256);
+						var colorG = Math.floor(Math.random() * 256);
+						var colorB = Math.floor(Math.random() * 256);
+						colr = `rgb(${colorR}, ${colorG}, ${colorB})`;
+					}
+					if(isRanOpacity){
+						ctx.globalAlpha = Math.random();
+					}
+					else{
+						ctx.globalAlpha = 1;
+					}
+					ctx.fillStyle = colr;
+					ctx.fillRect(0, 0, width, height);
+					ctx.restore();
+				}
+				if(isStar){
+					startX = Math.floor(Math.random() * canvasWidth);
+					startY = Math.floor(Math.random() * canvasHeight);
+					ctx.save();
+					ctx.translate(startX, startY);
+					if(isRanAngle){
+						var randomAngle = Math.random() * Math.PI * 2;
+						ctx.rotate(randomAngle);
+					}
+					if(isRanColor){
+						var colorR = Math.floor(Math.random() * 256);
+						var colorG = Math.floor(Math.random() * 256);
+						var colorB = Math.floor(Math.random() * 256);
+						colr = `rgb(${colorR}, ${colorG}, ${colorB})`;
+					}
+					if(isRanOpacity){
+						ctx.globalAlpha = Math.random();
+					}
+					else{
+						ctx.globalAlpha = 1;
+					}
+					ctx.fillStyle = colr;
+					r = Math.floor(Math.random() * 5);
+					n = Math.floor(Math.random() * 30);
+					inset = width;
+				    ctx.beginPath();
+				    ctx.moveTo(0,0-r);
+				    for (var i = 0; i < n; i++) {
+				        ctx.rotate(Math.PI / n);
+				        ctx.lineTo(0, 0 - inset);
+				        ctx.rotate(Math.PI / n);
+				        ctx.lineTo(0, 0 - r);
+				    }
+				    ctx.closePath();
+				    ctx.fill();
+				    ctx.restore();
+				}
+		 		if(isNGon){
+		 			startX = Math.floor(Math.random() * canvasWidth);
+					startY = Math.floor(Math.random() * canvasHeight);
+					ctx.save();
+					ctx.translate(startX, startY);
+					if(isRanAngle){
+						var randomAngle = Math.random() * Math.PI * 2;
+						ctx.rotate(randomAngle);
+					}
+					if(isRanColor){
+						var colorR = Math.floor(Math.random() * 256);
+						var colorG = Math.floor(Math.random() * 256);
+						var colorB = Math.floor(Math.random() * 256);
+						colr = `rgb(${colorR}, ${colorG}, ${colorB})`;
+					}
+					if(isRanOpacity){
+						ctx.globalAlpha = Math.random();
+					}
+					else{
+						ctx.globalAlpha = 1;
+					}
+					ctx.fillStyle = colr;
+		 			varN = Math.floor(Math.random() * 8)+3;//number of points
+				    ctx.beginPath();
+				    ctx.moveTo(0,0-width/2);
+		 		    for (var i = 0; i < varN; i++) {
+		 		        ctx.rotate(2 * Math.PI / varN);
+		 		        ctx.lineTo(0, 0 - width/2);
+		 		    }
+		 		    ctx.closePath();
+		 		    ctx.fill();
+		 		    ctx.restore();
+		 		}
+				
+		 }
+	}
+
+</script>
+	
+</body>
+</html>
