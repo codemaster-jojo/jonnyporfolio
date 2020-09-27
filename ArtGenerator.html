@@ -83,12 +83,12 @@
 		}
 	</style>
 </head>
-<body>
+<body onload="drawPi()">
 
 <div class="grid-container">
 	<div class="header">
 		<h1 style="margin:0">Art Generator</h1>
-		<a href="https://www.youtube.com/channel/UC28LJ3xXFirkPAGxJScnrCg?view_as=subscriber" target="_blank"><p style="margin:0">Made By Jonny Pi</p></a>
+		<a href="https://www.youtube.com/channel/UC28LJ3xXFirkPAGxJScnrCg?view_as=subscriber" target="_blank"><p style="margin:0">&#169 Made By Jonny &#960</p></a>
 	</div>
 	<div class="menu">
 		<form class = "stats" id = "myForm">
@@ -144,15 +144,15 @@
 				<div id="filter">
 					<label style="font-size:20px;margin:0">FILTERS:</label><br>
 					<label for="invertf">Invert</label>
-					<input id="invertf" type="range" min="1" max = "100" step="1" value="1" onchange="updateFilter()"><br>
+					<input id="invertf" type="range" min="0" max = "100" step="1" value="0" onchange="updateFilter()"><br>
 					<label for="saturatef">Saturate</label>
-					<input id="saturatef" type="range" min="1" max = "200" step="1" value="100" onchange="updateFilter()"><br>
+					<input id="saturatef" type="range" min="0" max = "100" step="1" value="100" onchange="updateFilter()"><br>
 					<label for="blurf">Blur</label>
-					<input id="blurf" type="range" min="1" max = "10" step="1" value="0" onchange="updateFilter()"><br>
+					<input id="blurf" type="range" min="0" max = "10" step="1" value="0" onchange="updateFilter()"><br>
 					<label for="contrastf">Contrast</label>
-					<input id="contrastf" type="range" min="1" max = "100" step="1" value="100" onchange="updateFilter()"><br>
+					<input id="contrastf" type="range" min="0" max = "100" step="1" value="100" onchange="updateFilter()"><br>
 					<label for="brightnessf">Brightness</label>
-					<input id="brightnessf" type="range" min="1" max = "100" step="1" value="100" onchange="updateFilter()"><br>
+					<input id="brightnessf" type="range" min="0" max = "100" step="1" value="100" onchange="updateFilter()"><br>
 				</div>
 				<hr>
 			<input type="submit" value="Update" id="submit">
@@ -197,8 +197,45 @@
 		var blr = cblur.value;
 		var cont = ccontrast.value;
 		var brt = cbrightness.value;
-		canvas.style.filter = `invert(${inv}%) saturate(${sat}%) blur(${blr}px) contrast(${cont}%) brightness(${brt})`;
+		canvas.style.filter = `invert(${inv}%) saturate(${sat}%) blur(${blr}px) contrast(${cont}%) brightness(${brt}%)`;
 	}
+    function drawPi(){
+    	density = 200;
+    	draw();
+        ctx.moveTo(225, 100);
+        ctx.lineTo(225, 150);
+        ctx.lineTo(275, 150);
+        ctx.lineTo(275, 316);
+        ctx.lineTo(241, 350);
+        ctx.lineTo(275, 400);
+        ctx.lineTo(325, 350);
+        ctx.lineTo(325, 150);
+        ctx.lineTo(425, 150);
+        ctx.lineTo(425, 400);
+        ctx.lineTo(475, 400);
+        ctx.lineTo(475, 150);
+        ctx.lineTo(525, 150);
+        ctx.lineTo(525, 100);
+        ctx.lineTo(225, 100);
+        ctx.closePath();
+        ctx.lineWidth = 5;
+        ctx.strokeStyle = "#FFA500";
+        ctx.stroke();
+        ctx.fillStyle = "#FFA500";
+        ctx.fill();
+        
+        //copyright logo
+        ctx.beginPath();
+        ctx.arc(525, 375, 25, 0, 2 * Math.PI, false);
+        ctx.stroke();
+        ctx.font = "40px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("C", 525, 378);
+
+    	density = 7;
+        draw();
+    }
 	function handleForm(event) {
 		event.preventDefault(); 
 		colr = document.getElementById("color").value;
