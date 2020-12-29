@@ -88,7 +88,7 @@
 <div class="grid-container">
 	<div class="header">
 		<h1 style="margin:0">Art Generator</h1>
-		<a href="https://www.youtube.com/channel/UC28LJ3xXFirkPAGxJScnrCg?view_as=subscriber" target="_blank"><p style="margin:0">&#169 Made By Jonny &#960</p></a>
+		<a href="https://www.youtube.com/channel/UC28LJ3xXFirkPAGxJScnrCg?view_as=subscriber" target="_blank"><p style="margin:0"> Made By Jonny &#960 &#169</p></a>
 	</div>
 	<div class="menu">
 		<form class = "stats" id = "myForm">
@@ -248,7 +248,8 @@
 	} 
 	form.addEventListener('submit', handleForm);
 	clearBtn.addEventListener('click', function(){
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		stretchCanvas();
+        setTimeout(function(){ctx.clearRect(0, 0, canvas.width, canvas.height);},750);
 	});
 	
 	var canvas = document.getElementById("artCanvas");
@@ -271,8 +272,33 @@
 	gradient.addColorStop(.3, '#EFBE93');
 	gradient.addColorStop(1, '#C9806A');
 	
+	function shakeCanvas(){
+        setTimeout(function(){artCanvas.style.transform = "rotate(10deg)";},50);
+        setTimeout(function(){artCanvas.style.transform = "rotate(-10deg)";},100);
+        setTimeout(function(){artCanvas.style.transform = "rotate(10deg)";},150);
+        setTimeout(function(){artCanvas.style.transform = "rotate(-10deg)";},200);
+        setTimeout(function(){artCanvas.style.transform = "rotate(10deg)";},250);
+        setTimeout(function(){artCanvas.style.transform = "rotate(-10eg)";},300);
+        setTimeout(function(){artCanvas.style.transform = "rotate(10deg)";},350);
+        setTimeout(function(){artCanvas.style.transform = "rotate(-10deg)";},400);
+        setTimeout(function(){artCanvas.style.transform = "rotate(0deg)";},500);
+    }
+    
+   function stretchCanvas(){
+        setTimeout(function(){artCanvas.style.transform = "scaleX(1.1)";},50);
+        setTimeout(function(){artCanvas.style.transform = "scaleX(0.9)";},100);
+        setTimeout(function(){artCanvas.style.transform = "scaleX(1.1)";},150);
+        setTimeout(function(){artCanvas.style.transform = "scaleX(0.9)";},200)
+        setTimeout(function(){artCanvas.style.transform = "scaleX(1.1)";},250);
+        setTimeout(function(){artCanvas.style.transform = "scaleX(0.9)";},300);
+        setTimeout(function(){artCanvas.style.transform = "scaleX(1.1)";},350);
+        setTimeout(function(){artCanvas.style.transform = "scaleX(0.9)";},400);
+		setTimeout(function(){artCanvas.style.transform = "scaleX(1)";},500);
+    }
+    
 	function draw(){
-		for (d=0; d < density; d++){
+	shakeCanvas();
+    for (d=0; d < density; d++){
 			artCanvas.style.width = `${canvasWidth}px`;
 			artCanvas.style.height = `${canvasHeight}px`;
 			console.log(canvasWidth, canvasHeight);

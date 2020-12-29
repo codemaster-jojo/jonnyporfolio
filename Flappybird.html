@@ -103,7 +103,7 @@
 			var flappyscore = 0;
 
 			function onecolumnPair(bottomV, rightV){
-				//upper column
+				//lower column
 				var lowdiv = document.createElement("div")
 				lowdiv.style.position = "absolute";
 				lowdiv.style.backgroundSize = "100% 100%";
@@ -114,7 +114,7 @@
 				lowdiv.style.bottom = bottomV + "vh";
 				lowdiv.style.transform = "rotate(180deg)";
 				document.body.appendChild( lowdiv );
-				//lower column
+				//upper column
 				var updiv = document.createElement("div")
 				updiv.style.position = "absolute";
 				updiv.style.backgroundSize = "100% 100%";
@@ -134,6 +134,8 @@
 				var bird = flappybird.getBoundingClientRect();
 				var uppercol = coldata.upper.getBoundingClientRect();
 				var lowercol = coldata.lower.getBoundingClientRect();
+                
+                console.log("rightv " + coldata.rightV);
 
 				if(bird.right < uppercol.left){
 					return false;
